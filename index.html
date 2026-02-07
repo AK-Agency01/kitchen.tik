@@ -164,6 +164,7 @@ button {
 
 <body>
 
+<!-- زر واتساب -->
 <a href="https://wa.me/9647737643575" target="_blank" class="whatsapp-float">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
 </a>
@@ -186,7 +187,7 @@ button {
       <input type="tel" id="phone" placeholder="77XXXXXXXX"
       inputmode="numeric" maxlength="11"
       oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-
+      
       <div class="country">+964</div>
     </div>
 
@@ -214,7 +215,7 @@ const TELEGRAM_TOKEN = '7602821198:AAHHrMz_Ny9BtNf2TLqHTJHZxD_UbUiMsME';
 const CHAT_ID = '-1002694463022';
 const STORAGE_KEY = "last_order_time";
 
-async function sendOrder() {
+function sendOrder() {
   const phoneInput = document.getElementById("phone");
   const addressInput = document.getElementById("address");
   const msg = document.getElementById("msg");
@@ -242,20 +243,21 @@ async function sendOrder() {
   }
 
   const text =
-`📦 طلب جديد (مطبخ أطفال)
-📞 الرقم: ${phone}
-📍 العنوان: ${address}
-⏰ ${new Date().toLocaleString("ar-IQ")}`;
+`📞 الرقم: ${phone}
+📍 العنوان: ${address}`;
 
   fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
     method: "POST",
     headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({ chat_id: CHAT_ID, text })
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: text
+    })
   }).then(res => {
     if (res.ok) {
       localStorage.setItem(STORAGE_KEY, now);
       msg.style.color = "green";
-      msg.innerText = "✅ تم تثبيت الطلب بنجاح";
+      msg.innerText = "✅ تم إرسال الطلب";
       phoneInput.value = "";
       addressInput.value = "";
     }
