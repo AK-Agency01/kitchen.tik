@@ -254,9 +254,10 @@ function sendOrder() {
   const lastTime = localStorage.getItem(STORAGE_KEY);
   const now = Date.now();
 
+  // منع الإرسال أكثر من مرة خلال 24 ساعة
   if (lastTime && now - lastTime < 86400000) {
     msg.style.color = "red";
-    msg.innerText = "⚠️ تم إرسال طلب سابق";
+    msg.innerText = "⚠️ مسموح إرسال طلب واحد فقط كل 24 ساعة";
     return;
   }
 
@@ -270,11 +271,11 @@ function sendOrder() {
     body: JSON.stringify({ chat_id: CHAT_ID, text })
   }).then(res => {
     if (res.ok) {
-      ttq.track('Lead'); // TikTok Lead Event
+      ttq.track('Lead'); // TikTok Pixel
 
       localStorage.setItem(STORAGE_KEY, now);
       msg.style.color = "green";
-      msg.innerText = "✅ تم إرسال الطلب";
+      msg.innerText = "✅ تم إرسال الطلب بنجاح";
       phoneInput.value = "";
       addressInput.value = "";
     }
